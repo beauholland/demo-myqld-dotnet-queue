@@ -1,0 +1,183 @@
+{
+  "serviceRequest": {
+    "version": "1.0",
+    "requestDetails": {
+      "requestNumber": "BLW2000000",
+      "submitted": "2020-08-01T14:01:01",
+      "service": "BondLoan"
+    },
+    "household": {
+      "makeup": "CoupleOnly",
+      "dependents": "2",
+      "dfvrisk": "false",
+      "tenantCount": "2"
+    },
+    "person": {
+      "title": "Mr",
+      "firstName": "John",
+      "middleName": "James",
+      "lastname": "Doe",
+      "hasAlias": "true",
+      "aliases": [
+        {
+          "firstName": "Johnny",
+          "lastName": "Dough"
+        }
+      ],
+      "gender": "Male",
+      "dateOfBirth": "1970-01-25",
+      "hasPowerOfAttorney": "false",
+      "managedByPublicTrustee": "true",
+      "publicTrusteeName": "James Trustee",
+      "publicTrusteePhone": "5555 5555",
+      "employeeOfHPW": "false",
+      "indigenousStatus": "None of the above",
+      "residencyStatus": "A",
+      "residencyDocumentType": "PASSPORT",
+      "residencyDVS": {
+        "documentTypeCode": "PP",
+        "resultCode": "Y"
+      },
+      "homePhone": "5555 5555",
+      "mobile": "555 555 555",
+      "email": "john.doe@email.com",
+      "residentialAddress": "1 Smith St, Smithville Qld 4000",
+      "residentialAddressManualEntry": "false",
+      "residentialAddressLine1": "1 Smith St",
+      "residentialAddressLocality": "Smithville",
+      "residentialAddressState": "Qld",
+      "residentialAddressLGA": "Brisbane City",
+      "residentialAddressPostcode": "4000",
+      "residentialAddressCountry": "Australia",
+      "residentialAddressLat": "-27.001",
+      "residentialAddressLong": "57.123",
+      "residentialAddressLocationType": "ROOFTOP",
+      "postalAddressDifferent": "true",
+      "postalAdress": "PO BOX 123, Smithville Qld 4000",
+      "postalAddressManualEntry": "true",
+      "postalAddressLine1": "PO BOX 123",
+      "postalAddressLocality": "Smithville",
+      "postalAddressState": "Qld",
+      "postalAddressLGA": "Brisbane City",
+      "postalAddressPostcode": "4000",
+      "postalAddressCountry": "Australia",
+      "postalAddressLat": "-27.001",
+      "postalAddressLong": "57.123",
+      "postalAddressLocationType": "APPROXIMATE",
+      "alternativeContacts": [
+        {
+          "firstName": "Bill",
+          "lastName": "Dough",
+          "phone": "5555 1111",
+          "relationship": "Sibbling"
+        }
+      ],
+      "incomes": [
+        {
+          "type": "1",
+          "proofType": "1",
+          "reference": "CRN00001111",
+          "grossWeeklyIncome": "500"
+        }
+      ],
+      "savings": "400",
+      "propertyOwnershipType": "None of the above"
+    },
+    "tenants": [
+      {
+        "title": "Mr",
+        "firstName": "Jane",
+        "middleName": "Mary",
+        "lastName": "Doe",
+        "gender": "Female",
+        "dateOfBirth": "1975-05-15",
+        "hasAlias": "false",
+        "hasPowerOfAttorney": "true",
+        "powerOfAttorneyName": "John Doe",
+        "powerOfAttorneyPhone": "5555 5555",
+        "managedByPublicTrustee": "false",
+        "employeeOfHPW": "false",
+        "indigenousStatus": "None of the above",
+        "residencyStatus": "A",
+        "residencyDocumentType": "BIRTHCERT",
+        "residencyDocumentAttachment": "6fc9464f-62b5-469b-8048-7d725cade3ae_FA567DB3_proof01.pdf",
+        "preferredContactMethod": "Phone",
+        "homePhone": "5555 5555",
+        "mobile": "555 555 555",
+        "email": "jane.doe@email.com",
+        "addressDifferentToPrimary": "No",
+        "aliases": [
+          {
+
+          }
+        ],
+        "incomes": [
+          {
+            "type": "1",
+            "proofType": "5",
+            "proofAttachment": "6fc9464f-62b5-469b-8048-7d725cade3ae_DB124EA1_proof02.pdf",
+            "grossWeeklyIncome": "350"
+          }
+        ],
+        "savings": "250",
+        "propertyOwnershipType": "None of the above",
+        "alternativeContacts": [
+          {
+            "firstName": "Mary",
+            "lastName": "Doe",
+            "phone": "5555 8888",
+            "relationship": "Mother"
+          }
+        ]
+      }
+    ],
+    "rentalProperty": {
+      "address": "1 James Rd, Smithville Qld 4000",
+      "addressManualEntry": "false",
+      "addressLine1": "1 James Rd",
+      "addressLocality": "Smithville",
+      "addressState": "Qld",
+      "addressLGA": "Brisbane City",
+      "addressPostcode": "4000",
+      "addressCountry": "Australia",
+      "addressLat": "-27.0003",
+      "addressLong": "53.456",
+      "addressLocationType": "ROOFTOP",
+      "type": "B",
+      "bedrooms": "3",
+      "weeklyRent": "350",
+      "leaseStartDate": "2020-11-05",
+      "leaseTermMonths": "6",
+      "bond": "1400",
+      "bondContribution": "250",
+      "bondLoan": "1150"
+    },
+    "rentalAgent": {
+      "name": "Ray White",
+      "phone": "5555 6666",
+      "mobile": "555 666 555",
+      "facsimile": "5555 7777",
+      "email": "ray.white@email.com",
+      "address": "99 Ray Rd, Whiteville Qld 4001",
+      "addressManualEntry": "false",
+      "addressLine1": "99 Ray Rd",
+      "addressLocality": "Whiteville",
+      "addressState": "Qld",
+      "addressLGA": "Brisbane City",
+      "addressPostcode": "4001",
+      "addressCountry": "Australia",
+      "addressLat": "-27.125",
+      "addressLong": "53.777",
+      "addressLocationType": "ROOFTOP"
+    },
+    "additional": {
+      "consent": "true",
+      "comments": "Could you please call me urgently as I need this loan."
+    },
+    "attachments": [
+      "6fc9464f-62b5-469b-8048-7d725cade3ae_FA567DB3_proof01.pdf",
+      "6fc9464f-62b5-469b-8048-7d725cade3ae_DB124EA1_proof02.pdf"
+    ]
+  }
+
+}
