@@ -100,7 +100,7 @@
         "indigenousStatus": "None of the above",
         "residencyStatus": "A",
         "residencyDocumentType": "BIRTHCERT",
-        "residencyDocumentAttachment": "6fc9464f-62b5-469b-8048-7d725cade3ae_FA567DB3_proof01.pdf",
+        "residencyDocumentAttachment": "6fc9464f-62b5-469b-8048-7d725cade3ae_FA567DB3.pdf",
         "preferredContactMethod": "Phone",
         "homePhone": "5555 5555",
         "mobile": "555 555 555",
@@ -175,8 +175,14 @@
       "comments": "Could you please call me urgently as I need this loan."
     },
     "attachments": [
-      "6fc9464f-62b5-469b-8048-7d725cade3ae_FA567DB3_proof01.pdf",
-      "6fc9464f-62b5-469b-8048-7d725cade3ae_DB124EA1_proof02.pdf"
+      {
+        "id": "6fc9464f-62b5-469b-8048-7d725cade3ae_FA567DB3.pdf",
+        "name": "proof01.pdf"
+      },
+      {
+        "id": "6fc9464f-62b5-469b-8048-7d725cade3ae_FA567DB3.pdf",
+        "name": "proof02.pdf"
+      }
     ]
   }
 

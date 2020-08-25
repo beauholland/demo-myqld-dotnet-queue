@@ -1,27 +1,34 @@
 ﻿using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace dotnet_client_consumer
 {
     class Program
     {
         // IAM access keys and secrets
-        private static string accessKeyId = "XXX";
-        private static string secretAccessKey = "XXX";
+        private static string accessKeyId = "XXXX";
+        private static string secretAccessKey = "XXXX";
 
+        // QUEUE SETTINGS
         // New Request Queue Name
-        private static string newRequestQueueName = "XXXX";
+        private static string newRequestQueueName = "myqld_blarga_newservicerequest_test.fifo";
         // Get the Queue Url for Queue Name
-        private static string newRequestQueueUrl = "https://sqs.ap-southeast-2.amazonaws.com/XXXX/XXXX.fifo";
-
+        private static string newRequestQueueUrl = "https://sqs.ap-southeast-2.amazonaws.com/230234428082/myqld_blarga_newservicerequest_test.fifo";
         // New Request Queue Name
         private static string newRequestNumber = "BLW2000000";
         private static string newRequestMessageGroup = "NewRequests";
+
+        // S3 SETTINGS
+        private static string bucketName = "myqldservicerequestattachments";
+
 
         static void Main(string[] args)
         {
@@ -39,10 +46,13 @@ namespace dotnet_client_consumer
             Console.WriteLine("AWS SQS");
             Console.WriteLine("--------");
             Console.WriteLine("Choose an option:");
-            Console.WriteLine("1) Create Message");
-            Console.WriteLine("2) List Messages");
-            Console.WriteLine("3) Delete Message");
-            Console.WriteLine("4) Exit");
+            Console.WriteLine("1) SQS - Create Message");
+            Console.WriteLine("2) SQS - List Messages");
+            Console.WriteLine("3) SQS - Delete Message");
+            Console.WriteLine("4) S3  - Upload File");
+            Console.WriteLine("5) S3  - List Files");
+            Console.WriteLine("6) S3  - Download File");
+            Console.WriteLine("7) --Exit--");
             Console.Write("\r\nSelect an option: ");
 
             switch (Console.ReadLine())
@@ -57,6 +67,15 @@ namespace dotnet_client_consumer
                     DeleteMessage();
                     return true;
                 case "4":
+                    UploadFile();
+                    return true;
+                case "5":
+                    ListFiles();
+                    return true;
+                case "6":
+                    DownloadFile();
+                    return true;
+                case "7":
                     return false;
                 default:
                     return true;
@@ -109,7 +128,7 @@ namespace dotnet_client_consumer
         public static void ListMessages()
         {
             Console.WriteLine("\n--- LISTING MESSAGES");
-            
+
             // NOTE: "Visibility timeout" when you read a message - these messages will not be available for 30 secs (configurable value on SQS)
             // Visibility timeout sets the length of time that a message received from a queue(by one consumer) will not be visible to the other message consumers.
             // The visibility timeout begins when Amazon SQS returns a message. If the consumer fails to process and delete the message before the visibility timeout expires, 
@@ -167,7 +186,7 @@ namespace dotnet_client_consumer
                 }
                 Console.WriteLine($"\n--- DELETED MESSAGE");
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine($"\n--- DELETE MESSAGE ERROR\n");
                 Console.WriteLine(ex.ToString());
@@ -176,6 +195,149 @@ namespace dotnet_client_consumer
             Console.WriteLine("\n\n--- PRESS <ENTER>");
             Console.ReadLine();
 
+        }
+
+        public static void UploadFile()
+        {
+            Console.WriteLine("\n--- UPLOAD FILE");
+            Console.Write("Enter Filename:");
+            var newS3fileName = Console.ReadLine();
+            
+            using (IAmazonS3 client = new AmazonS3Client(accessKeyId, secretAccessKey, RegionEndpoint.APSoutheast2))
+            {
+                WritingAnObjectAsync(client, newS3fileName).Wait();
+            }
+            
+            Console.WriteLine($"\n--- FILE UPLOADED");
+
+            Console.WriteLine("\n\n--- PRESS <ENTER>");
+            Console.ReadLine();
+        }
+
+        static async Task WritingAnObjectAsync(IAmazonS3 client, string newS3fileName)
+        {
+            try
+            {
+                // Put the object-set ContentType and add metadata if required
+                var putRequest = new PutObjectRequest
+                {
+                    BucketName = bucketName,
+                    Key = newS3fileName,
+                    FilePath = "example.pdf",
+                    ContentType = "application/json"
+                };
+
+                putRequest.Metadata.Add("x-amz-meta-title", "BLW2222222");
+                PutObjectResponse response = await client.PutObjectAsync(putRequest);
+            }
+            catch (AmazonS3Exception e)
+            {
+                Console.WriteLine("Error encountered ***. Message:'{0}' when writing an object", e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+            }
+        }
+
+        public static void ListFiles() 
+        {
+            Console.WriteLine("\n--- LIST FILES");
+            using (IAmazonS3 client = new AmazonS3Client(accessKeyId, secretAccessKey, RegionEndpoint.APSoutheast2))
+            {
+                ListingObjectsAsync(client).Wait();
+            }
+
+            Console.WriteLine("\n\n--- PRESS <ENTER>");
+            Console.ReadLine();
+        }
+        static async Task ListingObjectsAsync(IAmazonS3 client)
+        {
+            try
+            {
+                ListObjectsV2Request request = new ListObjectsV2Request
+                {
+                    BucketName = bucketName,
+                    MaxKeys = 10
+                };
+                ListObjectsV2Response response;
+                do
+                {
+                    response = await client.ListObjectsV2Async(request);
+
+                    // Process the response.
+                    foreach (S3Object entry in response.S3Objects)
+                    {
+                        Console.WriteLine("key = {0} size = {1}",
+                            entry.Key, entry.Size);
+                    }
+                    Console.WriteLine("Next Continuation Token: {0}", response.NextContinuationToken);
+                    request.ContinuationToken = response.NextContinuationToken;
+                } while (response.IsTruncated);
+            }
+            catch (AmazonS3Exception amazonS3Exception)
+            {
+                Console.WriteLine("S3 error occurred. Exception: " + amazonS3Exception.ToString());
+                Console.ReadKey();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.ToString());
+                Console.ReadKey();
+            }
+        }
+
+        public static void DownloadFile()
+        {
+            Console.WriteLine("\n--- DOWNLOAD FILE");
+            Console.Write("Enter Filename:");
+            var downloadFileName = Console.ReadLine();
+            using (IAmazonS3 client = new AmazonS3Client(accessKeyId, secretAccessKey, RegionEndpoint.APSoutheast2))
+            {
+                ReadObjectDataAsync(client, downloadFileName).Wait();
+            }
+
+            Console.WriteLine("\n\n--- PRESS <ENTER>");
+            Console.ReadLine();
+        }
+
+        static async Task ReadObjectDataAsync(IAmazonS3 client, string downloadFileName)
+        {
+            // string responseBody = "";
+            try
+            {
+                GetObjectRequest request = new GetObjectRequest
+                {
+                    BucketName = bucketName,
+                    Key = downloadFileName
+                };
+                using (GetObjectResponse response = await client.GetObjectAsync(request))
+                using (Stream responseStream = response.ResponseStream)
+                using (Stream s = File.Create(downloadFileName))
+                {
+                    responseStream.CopyTo(s);
+                }
+                //using (StreamReader reader = new StreamReader(responseStream))
+                //{
+                //    //string title = response.Metadata["x-amz-meta-title"]; // Assume you have "title" as medata added to the object.
+                //    //string contentType = response.Headers["Content-Type"];
+                //    //Console.WriteLine("Object metadata, Title: {0}", title);
+                //    //Console.WriteLine("Content type: {0}", contentType);
+
+                //    responseBody = reader.ReadToEnd(); // Now you process the response body.
+
+                //}
+                
+            }
+            catch (AmazonS3Exception e)
+            {
+                // If bucket or object does not exist
+                Console.WriteLine("Error encountered ***. Message:'{0}' when reading object", e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unknown encountered on server. Message:'{0}' when reading object", e.Message);
+            }
         }
 
     }

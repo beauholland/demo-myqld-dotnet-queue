@@ -8,16 +8,21 @@
 
   <ItemGroup>
     <None Remove="example-blarga-message.json" />
+    <None Remove="example.pdf" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="example-blarga-message.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="example.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.SQS" Version="3.3.103.26" />
+    <PackageReference Include="AWSSDK.S3" Version="3.5.0.2" />
+    <PackageReference Include="AWSSDK.SQS" Version="3.5.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
